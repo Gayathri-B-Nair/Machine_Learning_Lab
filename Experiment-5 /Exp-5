@@ -175,3 +175,35 @@ Confusion Matrix:
  [ 19  34 237]]
 \\
 
+importance=pd.DataFrame({
+    "Feature":features,
+    "Importance":id3_model.feature_importances_
+})
+importance_sorted=importance.sort_values(
+    "Importance",
+    ascending=True
+)
+plt.figure(figsize=(22,12))
+plot_tree(
+    id3_model,
+    feature_names=features,
+    class_names=id3_model.classes_,
+    filled=True,
+    rounded=True,
+    proportion=False
+)
+plt.title("Customer Segmentation using ID3 Decision Tree")
+plt.show()
+plt.figure(figsize=(10,6))
+importance_sorted=importance.sort_values(
+    "Importance",
+    ascending=True
+)
+plt.barh(
+    importance_sorted["Feature"],
+    importance_sorted["Importance"]
+)
+plt.xlabel("Information_based importance")
+plt.ylabel("Customer Behavior Feature")
+plt.title("Feature Importance in Customer Segmentation")
+plt.show()

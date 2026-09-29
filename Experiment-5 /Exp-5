@@ -1,0 +1,76 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,classification_report,confusion_matrix
+from sklearn.tree import DecisionTreeClassifier,plot_tree
+
+
+df=pd.read_excel(r"C:\Users\CSEC2\Downloads\Online Retail.xlsx")
+print(df.head())
+print(df.info())
+
+
+\\
+ InvoiceNo StockCode                          Description  Quantity  \
+0    536365    85123A   WHITE HANGING HEART T-LIGHT HOLDER         6   
+1    536365     71053                  WHITE METAL LANTERN         6   
+2    536365    84406B       CREAM CUPID HEARTS COAT HANGER         8   
+3    536365    84029G  KNITTED UNION FLAG HOT WATER BOTTLE         6   
+4    536365    84029E       RED WOOLLY HOTTIE WHITE HEART.         6   
+
+          InvoiceDate  UnitPrice  CustomerID         Country  
+0 2010-12-01 08:26:00       2.55     17850.0  United Kingdom  
+1 2010-12-01 08:26:00       3.39     17850.0  United Kingdom  
+2 2010-12-01 08:26:00       2.75     17850.0  United Kingdom  
+3 2010-12-01 08:26:00       3.39     17850.0  United Kingdom  
+4 2010-12-01 08:26:00       3.39     17850.0  United Kingdom  
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 541909 entries, 0 to 541908
+Data columns (total 8 columns):
+ #   Column       Non-Null Count   Dtype         
+---  ------       --------------   -----         
+ 0   InvoiceNo    541909 non-null  object        
+ 1   StockCode    541909 non-null  object        
+ 2   Description  540455 non-null  object        
+ 3   Quantity     541909 non-null  int64         
+ 4   InvoiceDate  541909 non-null  datetime64[ns]
+ 5   UnitPrice    541909 non-null  float64       
+ 6   CustomerID   406829 non-null  float64       
+ 7   Country      541909 non-null  object        
+dtypes: datetime64[ns](1), float64(2), int64(1), object(4)
+memory usage: 33.1+ MB
+None
+\\
+
+df=df.dropna(subset=["CustomerID"])
+df=df[~df["InvoiceNo"].astype(str).str.startswith("C")]
+df=df[df["Quantity"]>0]
+df=df[df["UnitPrice"]>0]
+df["TotalAmount"]=df["Quantity"]*df["UnitPrice"]
+print(df.shape)
+print(df.head())
+
+\\
+(397884, 9)
+  InvoiceNo StockCode                          Description  Quantity  \
+0    536365    85123A   WHITE HANGING HEART T-LIGHT HOLDER         6   
+1    536365     71053                  WHITE METAL LANTERN         6   
+2    536365    84406B       CREAM CUPID HEARTS COAT HANGER         8   
+3    536365    84029G  KNITTED UNION FLAG HOT WATER BOTTLE         6   
+4    536365    84029E       RED WOOLLY HOTTIE WHITE HEART.         6   
+
+          InvoiceDate  UnitPrice  CustomerID         Country  TotalAmount  
+0 2010-12-01 08:26:00       2.55     17850.0  United Kingdom        15.30  
+1 2010-12-01 08:26:00       3.39     17850.0  United Kingdom        20.34  
+2 2010-12-01 08:26:00       2.75     17850.0  United Kingdom        22.00  
+3 2010-12-01 08:26:00       3.39     17850.0  United Kingdom        20.34  
+4 2010-12-01 08:26:00       3.39     17850.0  United Kingdom        20.34  
+\\
+
+customer_data=df.groupby("CustomerID").age(
+    TotalSpend=("TotalAmount","sum"),
+    TotalQuantity=("Quantity","sum"),
+    NumberOfTransactions=
+)
